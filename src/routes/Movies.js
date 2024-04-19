@@ -1,8 +1,6 @@
 /**@type{import('fastify').FastifyPluginAsync<>} */
-import createError from "@fastify/error";
 
-export default async function Movies(app, options){
-    const InvaliidMovieError = createError('InvalidMovieError', 'Filme invalido', 400);
+export default async function Movies(app, options) {
 
     const movies = app.mongo.db.collection('movies');
 
@@ -12,7 +10,7 @@ export default async function Movies(app, options){
 
     app.get('/movies/:id', async (req, rep) => {
         let id = req.params.id;
-        let movie = await movies.findOne({_id: new app.mongo.ObjectId(id)});
+        let movie = await movies.findOne({ _id: new app.mongo.ObjectId(id) });
 
         return movie;
     });
@@ -22,14 +20,14 @@ export default async function Movies(app, options){
             body: {
                 type: 'object',
                 properties: {
-                    id: {type: 'integer'},
-                    title: {type: 'string'},
-                    synopsis: {type: 'string'},
-                    img_url: {type: 'string'},
-                    release: {type: 'string'},
-                    genre_id: {type: 'string'}
+                    id: { type: 'integer' },
+                    title: { type: 'string' },
+                    synopsis: { type: 'string' },
+                    img_url: { type: 'string' },
+                    release: { type: 'string' },
+                    genre_id: { type: 'string' }
                 },
-                required: ['title', 'synopsis', 'img_url', 'release', 'genre_id']
+                required: ['title', 'synopsis', 'release', 'genre_id']
             }
         },
         config: {
@@ -43,25 +41,14 @@ export default async function Movies(app, options){
         return rep.code(201).send();
     });
 
-    app.delete('/movies/:id', {
-        config: {
-            requireAuthentication: true
-        }
-    }, async(req, rep) => {
-        let id = req.params.id;
-        let movie = await movies.deleteOne({_id: new app.mongo.ObjectId(id)});
-
-        return rep.code(204).send();
-    });
-
     app.put('/movies/:id', {
         config: {
             requireAuthentication: true
         }
-    }, async(req, rep) => {
+    }, async (req, rep) => {
         let id = req.params.id;
         let movie = req.body;
-        await movies.updateOne({id: new app.mongo.ObjectId(id)}, {
+        await movies.updateOne({ id: new app.mongo.ObjectId(id) }, {
             $set: {
                 title: movie.title,
                 synopsis: movie.synopsis,
@@ -70,7 +57,18 @@ export default async function Movies(app, options){
                 genre_id: movie.genre_id
             }
         });
-        
+
+        return rep.code(204).send();
+    });
+
+    app.delete('/movies/:id', {
+        config: {
+            requireAuthentication: true
+        }
+    }, async (req, rep) => {
+        let id = req.params.id;
+        await movies.deleteOne({ _id: new app.mongo.ObjectId(id) });
+
         return rep.code(204).send();
     });
 }
