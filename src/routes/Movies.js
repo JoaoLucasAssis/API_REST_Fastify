@@ -1,8 +1,6 @@
 /**@type{import('fastify').FastifyPluginAsync<>} */
-import createError from "@fastify/error";
 
 export default async function Movies(app, options){
-    const InvaliidMovieError = createError('InvalidMovieError', 'Filme invalido', 400);
 
     const movies = app.mongo.db.collection('movies');
 
@@ -12,7 +10,7 @@ export default async function Movies(app, options){
 
     app.get('/movies/:id', async (req, rep) => {
         let id = req.params.id;
-        let movie = await movies.findOne({_id: new app.mongo.ObjectId(id)});
+        let movie = await movies.findOne({_id: new app.mongo.InputId(id)});
 
         return movie;
     });
