@@ -1,11 +1,11 @@
 import { AUTH_INVALID_TOKEN, AUTH_NO_TOKEN } from "../../../libs/error.js"
 
-export const extractUser = (app) => async (req, rep) => {
+export const isAuthenticated = (app) => async (req, rep) => {
     if (!req.headers['x-access-token']) throw new AUTH_NO_TOKEN()
 
     try {
         const user = app.jwt.verify(req.headers['x-access-token'])
-        console.log(user)
+        req.user = user.username
         return
     } catch (error) {
         req.log.error(error)
