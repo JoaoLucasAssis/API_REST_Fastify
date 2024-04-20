@@ -8,14 +8,14 @@ export default async function genre(app, options){
         return await genres.find().toArray();
     });
 
-    app.get('genres/:id', async(req, rep) => {
+    app.get('/genres/:id', async(req, rep) => {
         let id = req.params.id;
         let genre = await genre.findOne({_id: new app.mongo.InputId(id)});
 
         return genre;
     });
 
-    app.get('genres/:id/movies', async(req, rep) => {
+    app.get('/genres/:id/movies', async(req, rep) => {
         let id = req.params.id;
         let movie = await movies.find({cat_id: id}).toArray();
 
