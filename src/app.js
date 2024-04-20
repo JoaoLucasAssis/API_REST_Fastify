@@ -37,7 +37,7 @@ export async function build(opts) {
     await app.register(swagger, {
         mode: 'static',
         specification: {
-            path: 'src/swagger/swagger.json'
+            path: 'src/swagger/aplication.json'
         },
         exposeRoute: true
     })
