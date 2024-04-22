@@ -4,7 +4,6 @@ import jwt from '@fastify/jwt';
 import swagger from '@fastify/swagger';
 import swagger_ui from '@fastify/swagger-ui'
 import autoload from '@fastify/autoload';
-
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import path from 'path';
@@ -35,20 +34,12 @@ export async function build(opts) {
     });
 
     await app.register(swagger, {
-        swagger: {
-            info: {
-              title: 'API RESTful fastify',
-              description: 'Creating the endpoint to test the API fastify',
-              version: '0.1.0'
-            },
-            host: 'localhost:3000',
-            schemes: ['http'],
-            consumes: ['application/json'],
-            produces: ['application/json']
-          },
-          hideUntagged: true,
-          exposeRoute: true
-    })
+        mode: 'static',
+        specification: {
+            path: 'src/swagger/application.json'
+        },
+        exposeRoute: true
+    });
 
     await app.register(swagger_ui, {
         routePrefix: '/documentation',
@@ -60,8 +51,7 @@ export async function build(opts) {
         transformStaticCSP: (header) => header,
         transformSpecification: (swaggerObject, request, reply) => { return swaggerObject },
         transformSpecificationClone: true
-    })
-
+    });
     
     await app.register(autoload, {
         dir: path.join(__dirname, 'hooks'),
