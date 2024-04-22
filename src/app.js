@@ -35,11 +35,19 @@ export async function build(opts) {
     });
 
     await app.register(swagger, {
-        mode: 'static',
-        specification: {
-            path: 'src/swagger/aplication.json'
-        },
-        exposeRoute: true
+        swagger: {
+            info: {
+              title: 'API RESTful fastify',
+              description: 'Creating the endpoint to test the API fastify',
+              version: '0.1.0'
+            },
+            host: 'localhost:3000',
+            schemes: ['http'],
+            consumes: ['application/json'],
+            produces: ['application/json']
+          },
+          hideUntagged: true,
+          exposeRoute: true
     })
 
     await app.register(swagger_ui, {
@@ -54,10 +62,7 @@ export async function build(opts) {
         transformSpecificationClone: true
     })
 
-    await app.register(autoload, {
-        dir: path.join(__dirname, 'routes')
-    });
-
+    
     await app.register(autoload, {
         dir: path.join(__dirname, 'hooks'),
         encapsulate: false,
@@ -65,6 +70,10 @@ export async function build(opts) {
             return path.includes('functions')
         }
     })
+    
+    await app.register(autoload, {
+        dir: path.join(__dirname, 'routes')
+    });
 
     return app;
 }

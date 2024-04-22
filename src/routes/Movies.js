@@ -4,11 +4,59 @@ export default async function Movies(app, options){
 
     const movies = app.mongo.db.collection('movies');
 
-    app.get('/movies', async (req, rep) => {
+    app.get('/movies', {
+        schema: {
+            response: {
+                200: {
+                    description: 'Succesful response',
+                    type: 'object',
+                    properties: {}
+                },
+                default: {
+                    description: 'Internal server response',
+                    type: 'object',
+                    properties: {
+                            statusCode: {
+                                type: 'string',
+                                description: '500'
+                            },
+                            message: {
+                                type: 'string',
+                                description: "Something wrong happened."
+                            }
+                    }
+                }
+            }
+        }
+    }, async (req, rep) => {
         return await movies.find().toArray();
     });
 
-    app.get('/movies/:id', async (req, rep) => {
+    app.get('/movies/:id', {
+        schema: {
+            response: {
+                200: {
+                    description: 'Succesful response',
+                    type: 'object',
+                    properties: {}
+                },
+                default: {
+                    description: 'Internal server response',
+                    type: 'object',
+                    properties: {
+                            statusCode: {
+                                type: 'string',
+                                description: '500'
+                            },
+                            message: {
+                                type: 'string',
+                                description: "Something wrong happened."
+                            }
+                    }
+                }
+            }
+        }
+    }, async (req, rep) => {
         let id = req.params.id;
         let movie = await movies.findOne({_id: new app.mongo.ObjectId(id)});
 
@@ -28,10 +76,40 @@ export default async function Movies(app, options){
                     genre_id: { type: 'string' }
                 },
                 required: ['title', 'synopsis', 'release', 'genre_id']
+            },
+            response: {
+                201: {
+                    description: 'Succesful response',
+                    type: 'object',
+                    properties: {}
+                },
+                401: {
+                    description: 'Unauthorized response',
+                    type: 'object',
+                    properties: {
+                            statusCode: {
+                                type: 'string',
+                                description: '401'
+                            },
+                            code: {
+                                type: 'string',
+                                description: "AUTH_NO_TOKEN"
+                            },
+                            error: {
+                                type: 'string',
+                                description: "Unauthorized"
+                            },
+                            message: {
+                                type: 'string',
+                                description: "x-access-token is missing"
+                            }
+                    }
+                }
             }
         },
         config: {
-            requireAuthentication: true
+            requireAuthentication: true,
+            requireAdmin: true
         }
     }, async (req, rep) => {
         let movie = req.body;
@@ -42,8 +120,52 @@ export default async function Movies(app, options){
     });
 
     app.put('/movies/:id', {
+        schema: {
+            body: {
+                type: 'object',
+                properties: {
+                    id: { type: 'integer' },
+                    title: { type: 'string' },
+                    synopsis: { type: 'string' },
+                    img_url: { type: 'string' },
+                    release: { type: 'string' },
+                    genre_id: { type: 'string' }
+                },
+                required: ['title', 'synopsis', 'release', 'genre_id']
+            },
+            response: {
+                204: {
+                    description: 'No content response',
+                    type: 'object',
+                    properties: {}
+                },
+                401: {
+                    description: 'Unauthorized response',
+                    type: 'object',
+                    properties: {
+                            statusCode: {
+                                type: 'string',
+                                description: '401'
+                            },
+                            code: {
+                                type: 'string',
+                                description: "AUTH_NO_TOKEN"
+                            },
+                            error: {
+                                type: 'string',
+                                description: "Unauthorized"
+                            },
+                            message: {
+                                type: 'string',
+                                description: "x-access-token is missing"
+                            }
+                    }
+                }
+            }
+        },
         config: {
-            requireAuthentication: true
+            requireAuthentication: true,
+            requireAdmin: true
         }
     }, async (req, rep) => {
         let id = req.params.id;
@@ -62,8 +184,40 @@ export default async function Movies(app, options){
     });
 
     app.delete('/movies/:id', {
+        schema: {
+            response: {
+                204: {
+                    description: 'No content response',
+                    type: 'object',
+                    properties: {}
+                },
+                401: {
+                    description: 'Unauthorized response',
+                    type: 'object',
+                    properties: {
+                            statusCode: {
+                                type: 'string',
+                                description: '401'
+                            },
+                            code: {
+                                type: 'string',
+                                description: "AUTH_NO_TOKEN"
+                            },
+                            error: {
+                                type: 'string',
+                                description: "Unauthorized"
+                            },
+                            message: {
+                                type: 'string',
+                                description: "x-access-token is missing"
+                            }
+                    }
+                }
+            }
+        },
         config: {
-            requireAuthentication: true
+            requireAuthentication: true,
+            requireAdmin: true
         }
     }, async (req, rep) => {
         let id = req.params.id;
