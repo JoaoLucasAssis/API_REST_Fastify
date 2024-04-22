@@ -1,39 +1,41 @@
 /**@type{import('fastify').FastifyPluginAsync<>} */
 
-export default async function user(app, options){
+export default async function user(app, options) {
     const users = app.mongo.db.collection('users');
 
-    app.post('/login', {
+    app.post('/register', {
         schema: {
             body: {
                 type: 'object',
                 properties: {
                     _id: { type: 'string' },
                     name: { type: 'string' },
-                    password: {type: 'string'}
+                    password: { type: 'string' }
                 },
                 required: ['name', 'password']
             }
         }
-    },(req, rep) => {
-        let user = req.body;
-        req.log.info(`Login for user ${user.username}`);
-        //check login details
-        delete user.password;
-        return {
-            'admin-token': app.jwt.sign(user)
-        }
+    }, async (req, rep) => {
+        let name = req.body.name;
+
+        let jwtToken = app.jwt.sign(req.body);
+
+        await users.insertOne({ name: name, jwtToken: jwtToken });
+
+        return rep.code(201).send({
+            "x-access-token": jwtToken
+        });
     });
 
-    app.post('/loginAdmin', {
+    app.put('/register/:id', {
         schema: {
             body: {
                 type: 'object',
                 properties: {
                     id: { type: 'integer' },
                     name: { type: 'string' },
-                    password: {type: 'string'},
-                    isAdmin: {type: 'boolean'}
+                    password: { type: 'string' },
+                    isAdmin: { type: 'boolean' }
                 },
                 required: ['name', 'password', 'isAdmin']
             }
@@ -42,13 +44,23 @@ export default async function user(app, options){
             requireAuthentication: true
         }
     }, async (req, rep) => {
-        let name = req.body.name;
-        let isAdm = req.body.isAdmin;
+        let id = req.params.id;
 
-        let jwtToken = app.jwt.sign(req.body);
+        let adminToken = app.jwt.sign(req.body);
 
-        await users.insertOne({name: name, isAdmin: isAdm, jwtToken: jwtToken});
+        if(!req.body.isAdmin)
+            return rep.code(400).send({
+                "message": "isAdmin property must be true"
+        })
 
-        return rep.code(201).send();
+        await users.updateOne({ _id: new app.mongo.ObjectId(id) }, {
+            $set: {
+                adminToken: adminToken
+            }
+        });
+
+        return rep.code(200).send({
+            "admin-token": adminToken
+        });
     });
 }

@@ -22,7 +22,7 @@ export default async function genre(app, options){
         return movie;
     });
 
-    app.post('/genre', {
+    app.post('/genres', {
         schema: {
             body: {
                 type: 'object',
@@ -45,7 +45,7 @@ export default async function genre(app, options){
         return rep.code(201).send();
     });
 
-    app.put('/genre/:id', {
+    app.put('/genres/:id', {
         schema: {
             body: {
                 type: 'object',
