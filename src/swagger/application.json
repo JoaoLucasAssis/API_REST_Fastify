@@ -159,6 +159,200 @@
             }
           }
         }
+      },
+      "/genres": {
+        "get": {
+          "summary": "Listar todos os gêneros",
+          "responses": {
+            "200": {
+              "description": "Lista de gêneros recuperada com sucesso"
+            }
+          }
+        },
+        "post": {
+          "summary": "Criar um novo gênero",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "style": {
+                      "type": "string",
+                      "description": "Gênero"
+                    }
+                  },
+                  "required": ["style"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Filme criado com sucesso"
+            }
+          }
+        }
+      },
+      "/genres/{id}": {
+        "get": {
+          "summary": "Obter detalhes de um gênero pelo id",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID do gênero a ser recuperado"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Detalhes do gênero recuperados com sucesso"
+            },
+            "404": {
+              "description": "Gênero não encontrado"
+            }
+          }
+        },
+        "put": {
+          "summary": "Atualizar os detalhes de um gênero pelo id",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID do gênero a ser atualizado"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "style": {
+                        "type": "string",
+                        "description": "Gênero"
+                      }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Filme atualizado com sucesso"
+            },
+            "404": {
+              "description": "Filme não encontrado"
+            }
+          }
+        },
+        "delete": {
+          "summary": "Excluir um gênero pelo id",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID do gênero a ser excluído"
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Gênero excluído com sucesso"
+            },
+            "401": {
+              "description": "Não autorizado. Requerido x-access-token."
+            },
+            "404": {
+              "description": "Gênero não encontrado"
+            }
+          }
+        }
+      },
+      "/register": {
+        "post": {
+          "summary": "Criar um novo usuário",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Nome do usuário"
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "Senha do usuário"
+                    }
+                  },
+                  "required": ["name", "password"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Usuário criado com sucesso"
+            }
+          }
+        }
+      },
+      "/register/{id}": {
+        "put": {
+          "summary": "Tornar um usuário administrador da aplicação",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID do usuário a ser atualizado"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Nome do usuário"
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "Senha do usuário"
+                    }
+                  },
+                  "required": ["name", "password"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Usuário atualizado com sucesso"
+            },
+            "404": {
+              "description": "Usuário não encontrado"
+            }
+          }
+        }
       }
     }
 }
