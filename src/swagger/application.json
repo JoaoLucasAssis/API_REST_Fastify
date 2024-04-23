@@ -1,0 +1,358 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "API Rest Fastify specification",
+      "description": "API para criar, listar, atualizar e excluir filmes.",
+      "version": "1.0.0"
+    },
+    "servers": [
+        {
+          "url": "http://localhost:3000/"
+        }
+      ],
+    "paths": {
+      "/movies": {
+        "get": {
+          "summary": "Listar todos os filmes",
+          "responses": {
+            "200": {
+              "description": "Lista de filmes recuperada com sucesso"
+            }
+          }
+        },
+        "post": {
+          "summary": "Criar um novo filme",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "description": "Nome do filme"
+                    },
+                    "synopses": {
+                      "type": "string",
+                      "description": "Sinopse do filme"
+                    },
+                    "img_url": {
+                        "type": "string",
+                        "description": "Banner do filme"
+                    },
+                      "release": {
+                        "type": "string",
+                        "description": "Data de lançamento"
+                    },
+                      "gender_id": {
+                        "type": "string",
+                        "description": "Gênero do filme"
+                    }
+                  },
+                  "required": ["title", "sinopse", "img_url", "data_lancamento", "gender_id"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Filme criado com sucesso"
+            }
+          }
+        }
+      },
+      "/movies/{id}": {
+        "get": {
+          "summary": "Obter detalhes de um filme pelo id",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID do usuário a ser recuperado"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Detalhes do filme recuperados com sucesso"
+            },
+            "404": {
+              "description": "Filme não encontrado"
+            }
+          }
+        },
+        "put": {
+          "summary": "Atualizar os detalhes de um filme pelo id",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID do filme a ser atualizado"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Nome do filme"
+                      },
+                      "synopses": {
+                        "type": "string",
+                        "description": "Sinopse do filme"
+                      },
+                      "img_url": {
+                          "type": "string",
+                          "description": "Banner do filme"
+                      },
+                        "release": {
+                          "type": "string",
+                          "description": "Data de lançamento"
+                      },
+                        "genre_id": {
+                          "type": "string",
+                          "description": "Gênero do filme"
+                      }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Filme atualizado com sucesso"
+            },
+            "404": {
+              "description": "Filme não encontrado"
+            }
+          }
+        },
+        "delete": {
+          "summary": "Excluir um filme pelo id",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID do filme a ser excluído"
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Filme excluído com sucesso"
+            },
+            "404": {
+              "description": "Filme não encontrado"
+            }
+          }
+        }
+      },
+      "/genres": {
+        "get": {
+          "summary": "Listar todos os gêneros",
+          "responses": {
+            "200": {
+              "description": "Lista de gêneros recuperada com sucesso"
+            }
+          }
+        },
+        "post": {
+          "summary": "Criar um novo gênero",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "style": {
+                      "type": "string",
+                      "description": "Gênero"
+                    }
+                  },
+                  "required": ["style"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Filme criado com sucesso"
+            }
+          }
+        }
+      },
+      "/genres/{id}": {
+        "get": {
+          "summary": "Obter detalhes de um gênero pelo id",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID do gênero a ser recuperado"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Detalhes do gênero recuperados com sucesso"
+            },
+            "404": {
+              "description": "Gênero não encontrado"
+            }
+          }
+        },
+        "put": {
+          "summary": "Atualizar os detalhes de um gênero pelo id",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID do gênero a ser atualizado"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "style": {
+                        "type": "string",
+                        "description": "Gênero"
+                      }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Filme atualizado com sucesso"
+            },
+            "404": {
+              "description": "Filme não encontrado"
+            }
+          }
+        },
+        "delete": {
+          "summary": "Excluir um gênero pelo id",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID do gênero a ser excluído"
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Gênero excluído com sucesso"
+            },
+            "401": {
+              "description": "Não autorizado. Requerido x-access-token."
+            },
+            "404": {
+              "description": "Gênero não encontrado"
+            }
+          }
+        }
+      },
+      "/register": {
+        "post": {
+          "summary": "Criar um novo usuário",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Nome do usuário"
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "Senha do usuário"
+                    }
+                  },
+                  "required": ["name", "password"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Usuário criado com sucesso"
+            }
+          }
+        }
+      },
+      "/register/{id}": {
+        "put": {
+          "summary": "Tornar um usuário administrador da aplicação",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID do usuário a ser atualizado"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Nome do usuário"
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "Senha do usuário"
+                    }
+                  },
+                  "required": ["name", "password"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Usuário atualizado com sucesso"
+            },
+            "404": {
+              "description": "Usuário não encontrado"
+            }
+          }
+        }
+      }
+    }
+}
