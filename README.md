@@ -199,4 +199,4 @@ O projeto fornece as seguintes rotas:
 
 ## Licença
 
-Este projeto não possui nenhum licença. Sinta-se à vontade para usar, modificar e distribuir este código conforme necessário.
+Este projeto possui uma licença MIT. Sinta-se à vontade para usar, modificar e distribuir este código conforme necessário.
