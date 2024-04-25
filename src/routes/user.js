@@ -46,15 +46,13 @@ export default async function user(app, options) {
     }, async (req, rep) => {
         let id = req.params.id;
 
-        let adminToken = app.jwt.sign(req.body);
+        let user = req.body;
 
-        if(!req.body.isAdmin)
-            return rep.code(400).send({
-                "message": "isAdmin property must be true"
-        })
+        let adminToken = app.jwt.sign(user);
 
         await users.updateOne({ _id: new app.mongo.ObjectId(id) }, {
             $set: {
+                name: user.name,
                 adminToken: adminToken
             }
         });

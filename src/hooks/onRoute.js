@@ -1,5 +1,5 @@
 /** @type{import('fastify').FastifyPluginAsync<>} */
-import { isAdmin, isAuthenticated, checkGenre, checkMovie, checkAdmin  } from './functions/index.js'
+import { isAdmin, isAuthenticated, GenreExists, MovieExists, AdminExists } from './functions/index.js'
 
 export default async function onRouteHook(app, options) {
     app.addHook('onRoute', (routeOptions) => {
@@ -14,14 +14,16 @@ export default async function onRouteHook(app, options) {
         if (routeOptions.config?.requireAdmin) {
             routeOptions.onRequest.push(isAdmin(app));
         }
-        if (routeOptions.url === '/register/:id' && routeOptions.method === '/PUT') {
-            routeOptions.preHandler.push(checkAdmin(app));
+
+        // PreHandler
+        if (routeOptions.url === '/register/:id' && routeOptions.method === 'PUT') {
+            routeOptions.preHandler.push(AdminExists(app));
         }
-        if (routeOptions.url === '/genres' && routeOptions.method === 'POST'){
-            routeOptions.preHandler.push(checkGenre(app));
+        if (routeOptions.url === '/genres' && routeOptions.method === 'POST') {
+            routeOptions.preHandler.push(GenreExists(app));
         }
-        if (routeOptions.url === '/movies' && routeOptions.method === 'POST'){
-            routeOptions.preHandler.push(checkMovie(app));
+        if (routeOptions.url === '/movies' && routeOptions.method === 'POST') {
+            routeOptions.preHandler.push(MovieExists(app));
         }
     });
 }
