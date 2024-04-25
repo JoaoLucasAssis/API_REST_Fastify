@@ -16,9 +16,6 @@ export default async function onRouteHook(app, options) {
         }
 
         // PreHandler
-        if (routeOptions.url === '/register' && routeOptions.method === 'POST') {
-            routeOptions.preHandler.push(UserExists(app));
-        }
         if (routeOptions.url === '/register/:id' && routeOptions.method === 'PUT') {
             routeOptions.preHandler.push(AdminExists(app));
         }
