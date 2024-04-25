@@ -10,14 +10,14 @@ export default async function genre(app, options){
 
     app.get('/genres/:id', async(req, rep) => {
         let id = req.params.id;
-        let genre = await genre.findOne({_id: new app.mongo.InputId(id)});
+        let genre = await genres.findOne({_id: new app.mongo.ObjectId(id)});
 
         return genre;
     });
 
     app.get('/genres/:id/movies', async(req, rep) => {
         let id = req.params.id;
-        let movie = await movies.find({cat_id: id}).toArray();
+        let movie = await movies.find({genre_id: id}).toArray();
 
         return movie;
     });
@@ -64,7 +64,7 @@ export default async function genre(app, options){
         let id = req.params.id;
         let genre = req.body;
 
-        await genres.updateOne({_id: new app.mongo.InputId(id)}, {
+        await genres.updateOne({_id: new app.mongo.ObjectId(id)}, {
             $set: {
                 name: genre.name
             }
@@ -80,7 +80,7 @@ export default async function genre(app, options){
         }
     }, async (req, rep) => {
         let id = req.params.id;
-        let genre = await genres.deleteOne({_id: new app.mongo.InputId(id)});
+        await genres.deleteOne({_id: new app.mongo.ObjectId(id)});
 
         return rep.code(204).send();
     });
