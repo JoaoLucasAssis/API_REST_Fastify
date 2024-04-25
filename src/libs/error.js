@@ -8,4 +8,4 @@ export const AUTH_INVALID_ADMIN_TOKEN = createError('AUTH_INVALID_ADMIN_TOKEN', 
 
 export const ALREADY_EXISTS = createError('ALREADY_EXISTS', 'The object already exists', 412);
 
-export const ADMIN_PROPERTY_NOT_FOUND = createError('ADMIN_PROPERTY_NOT_FOUND', 'isAdmin property must be true', 400);
+export const ADMIN_PROPERTY_FALSE = createError('ADMIN_PROPERTY_FALSE', 'isAdmin property must be true', 400);
