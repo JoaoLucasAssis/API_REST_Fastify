@@ -1,6 +1,6 @@
 import { ALREADY_EXISTS } from "../../../libs/error.js"
 
-export const checkMovie = (app) => async(req, rep) => {
+export const MovieExists = (app) => async(req, rep) => {
     const movies = app.mongo.db.collection('movies');
 
     let movie =  req.body;
