@@ -1,5 +1,5 @@
 /** @type{import('fastify').FastifyPluginAsync<>} */
-import { isAdmin, isAuthenticated, GenreExists, MovieExists, UserExists, AdminExists } from './functions/index.js'
+import { isAdmin, isAuthenticated, GenreExists, MovieExists, AdminExists } from './functions/index.js'
 
 export default async function onRouteHook(app, options) {
     app.addHook('onRoute', (routeOptions) => {
